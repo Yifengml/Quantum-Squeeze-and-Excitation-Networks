@@ -529,7 +529,7 @@ for epoch in range(num_epochs):
     ACNN_writer.add_scalar('Loss/train', A_net_running_loss / len(train_loader), epoch)
     ACNN_writer.add_scalar('Accuracy/Train', epoch_accuracyqse, epoch)
     ACNN_writer.add_scalar('ErrorRate/Train', error_rate, epoch)
-    print(f'Qse Linear: Epoch {epoch + 1}, Loss: {A_net_running_loss / len(train_loader)}')
+    print(f'Qse Mesh: Epoch {epoch + 1}, Loss: {A_net_running_loss / len(train_loader)}')
 
 
 

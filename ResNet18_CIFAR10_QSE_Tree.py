@@ -30,22 +30,21 @@ if torch.cuda.is_available():
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device: {device}')
 
-# 如果是GPU，还可以打印出更多信息
+
 if device.type == 'cuda':
     print(torch.cuda.get_device_name(0))
     print('Memory Usage:')
     print(f'Allocated: {round(torch.cuda.memory_allocated(0)/1024**3,1)} GB')
     print(f'Cached: {round(torch.cuda.memory_reserved(0)/1024**3,1)} GB')
 
-# 超参数设置
+
 num_epochs = 100
 batch_size = 128
-learning_rate = 0.005#0.001
+learning_rate = 0.005
 
-# CIFAR10 数据集
 transform = transforms.Compose([
     transforms.ToTensor(),
-    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261))  # 因为 CIFAR10 是彩色图，有三个通道
+    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261))
 ])
 
 train_dataset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
@@ -88,21 +87,20 @@ class QuantumLinearLayer(torch.nn.Module):
         self.input_channels = input_channels
         self.output_channels = output_channels
 
-        # 由于现在不需要经典层，所有输入通道都分配给量子层
         self.quantum_input_channels = input_channels
 
-        # 量子层的设置
+
         self.num_qubits = int(np.ceil(np.log2(self.quantum_input_channels)))
         self.dev = qml.device('default.qubit', wires=self.num_qubits)
         self.qnode = qml.QNode(self.quantum_circuit, self.dev, interface='torch')
     def amplitude_damping_kraus(self, qubit, gamma):
         r = random.random()
         if r < gamma:
-            # 应用 E_1 算符
+
             qml.RY(2 * np.arcsin(np.sqrt(gamma)), wires=qubit)
             qml.PauliX(wires=qubit)
         else:
-            # 应用 E_0 算符
+
             qml.RZ(2 * np.arccos(np.sqrt(1 - gamma)), wires=qubit)
 
     def phase_flipping_noise(self, qubit, gamma):
@@ -128,26 +126,26 @@ class QuantumLinearLayer(torch.nn.Module):
         qml.templates.embeddings.AmplitudeEmbedding(features=x, wires=range(self.num_qubits), normalize=True,
                                                     pad_with=0.0)
 
-        next_level_start = 1  # 初始化下一层的起始索引
-        current_level = [0]  # 当前层，从根节点开始
+        next_level_start = 1
+        current_level = [0]
 
         while next_level_start < self.num_qubits:
-            new_level = []  # 创建新的一层
+            new_level = []
             for node in current_level:
                 left = next_level_start
                 right = next_level_start + 1
 
-                if left < self.num_qubits:  # 确保不超过总量子位数
+                if left < self.num_qubits:
                     qml.CNOT(wires=[node, left])
                     new_level.append(left)
                     next_level_start += 1
 
-                if right < self.num_qubits:  # 确保不超过总量子位数
+                if right < self.num_qubits:
                     qml.CNOT(wires=[node, right])
                     new_level.append(right)
                     next_level_start += 1
 
-            current_level = new_level  # 更新当前处理的层
+            current_level = new_level
 
         # gamma = 0.1
         # for i in range(self.num_qubits):
@@ -159,7 +157,7 @@ class QuantumLinearLayer(torch.nn.Module):
         pad_size = max(2 ** self.num_qubits - self.quantum_input_channels, 0)
 
         batch_outputs = []
-        for sample in x:  # iterate over the batch
+        for sample in x:
             padded = torch.nn.functional.pad(sample, (0, pad_size), "constant", 0)
             batch_outputs.append(self.qnode(padded))
 
@@ -199,7 +197,7 @@ from torch import nn
 import torch
 import numpy as np
 def modeleva(model, test_loader, criterion):
-    model.eval()  # 设置模型为评估模式
+    model.eval()
     test_loss = 0.0
     correct = 0
     total = 0
@@ -224,7 +222,7 @@ def modeleva(model, test_loader, criterion):
     all_labels = np.concatenate(all_labels)
     all_preds = np.concatenate(all_preds)
 
-    # 多类分类问题需要先将标签二值化
+
     all_labels_bin = label_binarize(all_labels, classes=[i for i in range(10)])
     all_preds_bin = label_binarize(all_preds, classes=[i for i in range(10)])
 
@@ -511,11 +509,11 @@ def seresnet152():
 
 net_A =qseresnet18().to(device)
 
-# 损失函数和优化器
+
 criterion = nn.CrossEntropyLoss()
 
 
-ACNN_writer = SummaryWriter('../Topolo/QSEResNet18_Tree')
+ACNN_writer = SummaryWriter('QSEResNet18_Tree')
 
 
 
@@ -547,7 +545,7 @@ for epoch in range(num_epochs):
         loss.backward()
         Aoptimizer.step()
         A_net_running_loss += loss.item()
-        # Calculate accuracy
+
         _, predicted = torch.max(outputs.data, 1)
         total2 += labels.size(0)
         correct2 += (predicted == labels).sum().item()
@@ -559,13 +557,13 @@ for epoch in range(num_epochs):
     ACNN_writer.add_scalar('Loss/train', A_net_running_loss / len(train_loader), epoch)
     ACNN_writer.add_scalar('Accuracy/Train', epoch_accuracyqse, epoch)
     ACNN_writer.add_scalar('ErrorRate/Train', error_rate, epoch)
-    print(f'Qse Linear: Epoch {epoch + 1}, Loss: {A_net_running_loss / len(train_loader)}')
+    print(f'Qse Tree: Epoch {epoch + 1}, Loss: {A_net_running_loss / len(train_loader)}')
 
 
 
     test_loss, accuracy, roc_auc, f1, precision, recall = modeleva(net_A, test_loader, criterion)
     error_rate = (100 - accuracy)
-    # 添加测试结果到 tensorboard
+
     #ACNN_writer.add_scalar('TestLoss', test_loss, epoch)
     ACNN_writer.add_scalar('ErrorRate/Test', error_rate, epoch)
     ACNN_writer.add_scalar('Accuracy/Test', accuracy, epoch)
