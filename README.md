@@ -6,7 +6,7 @@ This repository contains five self‑contained training scripts that extend **Re
 
 | Topology | Script                           | Backend                                            | Default log dir                              |
 | -------- | -------------------------------- | -------------------------------------------------- | -------------------------------------------- |
-| Tree     | `ResNet18_CIFAR10_QSE_Tree.py`   | Pennylane (`default.qubit`)                        | `Topolo/QSEResNet18_Tree`                    |
+| Tree     | `ResNet18_CIFAR10_QSE_Tree.py`   | Pennylane (`default.qubit`)                        | `QSEResNet18_Tree`                           |
 | Star     | `ResNet18_CIFAR10_QSE_Star.py`   | Pennylane (`default.qubit`)                        | `QSEResNet18_Star`                           |
 | Mesh     | `ResNet18_CIFAR10_QSE_Mesh.py`   | Pennylane (`default.qubit`)                        | `QSEResNet18_Mesh`                           |
 | Linear   | `ResNet18_CIFAR10_QSE_Linear.py` | Pennylane (`default.qubit`)                        | `QSEResNet18_Linear`                         |
