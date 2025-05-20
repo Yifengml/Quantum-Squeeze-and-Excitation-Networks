@@ -6,11 +6,11 @@ This repository contains five self‑contained training scripts that extend **Re
 
 | Topology | Script                           | Backend                                            | Default log dir                              |
 | -------- | -------------------------------- | -------------------------------------------------- | -------------------------------------------- |
-| Tree     | `ResNet18_CIFAR10_QSE_Tree.py`   | Pennylane (`default.qubit`)                        | `Topolo/QSEResNet18_Tree` citeturn0file0  |
-| Star     | `ResNet18_CIFAR10_QSE_Star.py`   | Pennylane (`default.qubit`)                        | `QSEResNet18_Star` citeturn0file1         |
-| Mesh     | `ResNet18_CIFAR10_QSE_Mesh.py`   | Pennylane (`default.qubit`)                        | `QSEResNet18_Mesh` citeturn0file2         |
-| Linear   | `ResNet18_CIFAR10_QSE_Linear.py` | Pennylane (`default.qubit`)                        | `QSEResNet18_Linear` citeturn0file3       |
-| Circular | `IBM_circular.py`                | **IBM Quantum** (real hardware via Qiskit Runtime) | `IBM/QSEResNet18_Circular` citeturn0file4 |
+| Tree     | `ResNet18_CIFAR10_QSE_Tree.py`   | Pennylane (`default.qubit`)                        | `Topolo/QSEResNet18_Tree`                    |
+| Star     | `ResNet18_CIFAR10_QSE_Star.py`   | Pennylane (`default.qubit`)                        | `QSEResNet18_Star`                           |
+| Mesh     | `ResNet18_CIFAR10_QSE_Mesh.py`   | Pennylane (`default.qubit`)                        | `QSEResNet18_Mesh`                           |
+| Linear   | `ResNet18_CIFAR10_QSE_Linear.py` | Pennylane (`default.qubit`)                        | `QSEResNet18_Linear`                         |
+| Circular | `IBM_circular.py`                | **IBM Quantum** (real hardware via Qiskit Runtime) | `IBM/QSEResNet18_Circular`                   |
 
 All Pennylane scripts train on the full **CIFAR‑10** dataset, whereas the IBM demo downsamples to `20` training and `10` test images to keep real‑device runtime reasonable.
 
@@ -116,6 +116,26 @@ tensorboard --logdir .                # or point to an individual sub‑folder
 ## 7  Citation
 
 If you use these scripts in academic work, please cite the corresponding paper (to appear) and acknowledge the IBM Quantum platform when running on real hardware.
+
+Classical SE: 
+@inproceedings{hu2018squeeze,
+  title={Squeeze-and-excitation networks},
+  author={Hu, Jie and Shen, Li and Sun, Gang},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={7132--7141},
+  year={2018}
+}
+
+QSE:
+@inproceedings{peng2024quantum,
+  title={Quantum Squeeze-and-Excitation Networks},
+  author={Peng, Yifeng and Li, Xinyi and Wang, Ying},
+  booktitle={2024 IEEE International Conference on Quantum Computing and Engineering (QCE)},
+  volume={2},
+  pages={39--43},
+  year={2024},
+  organization={IEEE}
+}
 
 ---
 
